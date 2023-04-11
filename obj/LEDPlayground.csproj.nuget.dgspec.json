@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Git\\LEDPlayground\\LEDPlayground.csproj": {}
+    "D:\\Git\\LEDPlayGroundd\\LEDPlayground.csproj": {}
   },
   "projects": {
-    "D:\\Git\\LEDPlayground\\LEDPlayground.csproj": {
+    "D:\\Git\\LEDPlayGroundd\\LEDPlayground.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Git\\LEDPlayground\\LEDPlayground.csproj",
+        "projectUniqueName": "D:\\Git\\LEDPlayGroundd\\LEDPlayground.csproj",
         "projectName": "LEDPlayground",
-        "projectPath": "D:\\Git\\LEDPlayground\\LEDPlayground.csproj",
+        "projectPath": "D:\\Git\\LEDPlayGroundd\\LEDPlayground.csproj",
         "packagesPath": "C:\\Users\\Jimmy'sPC\\.nuget\\packages\\",
-        "outputPath": "D:\\Git\\LEDPlayground\\obj\\",
+        "outputPath": "D:\\Git\\LEDPlayGroundd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Jimmy'sPC\\AppData\\Roaming\\NuGet\\NuGet.Config",

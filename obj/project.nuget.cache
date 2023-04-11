@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Z8DZK8YIn0OV5jpoBHjD72NZoWr1O+D4ZcmxtoTHhdJr3Ph0oZrarZLlZg7m0RGKjX1rSpyC+ROU+WOfyRISiQ==",
+  "dgSpecHash": "t14ezeEMQuBg/1p81MxWYP5Ap/r2B1XijDjDB6ut4dG70ZjDKtBoGo5HBcBpliL5xaovBw9uiEz4NkWe7+mfqw==",
   "success": true,
-  "projectFilePath": "D:\\Git\\LEDPlayground\\LEDPlayground.csproj",
+  "projectFilePath": "D:\\Git\\LEDPlayGroundd\\LEDPlayground.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Jimmy'sPC\\.nuget\\packages\\hidsharp\\2.1.0\\hidsharp.2.1.0.nupkg.sha512"
   ],

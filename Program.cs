@@ -32,6 +32,7 @@ namespace LEDPlayground
                     {
                         colors[i] = 0xFFFFFF;
                     }
+
                     var lEDData = GetLEDData(colors, 16, 1.0f);
 
                     SendStartAction(0, lEDData.FanIndex + 1);
@@ -83,7 +84,7 @@ namespace LEDPlayground
             var result = new LEDDataAndFans() { LEDData = led_data, FanIndex = fan_idx };
             return result;
         }
-        private const byte UNIHUB_SLV2_TRANSACTION_ID = 0x33;
+        private const byte UNIHUB_SLV2_TRANSACTION_ID = 224;
 
         static public void SendStartAction(byte channel, int numFans)
         {
