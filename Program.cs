@@ -26,14 +26,14 @@ namespace LEDPlayground
                 {
                     deviceInfo.TryOpen(out HidStream stream);
                     _stream = stream;
-                    uint[] colors = new uint[16];
+                    uint[] colors = new uint[64];
 
-                    for (int i = 0; i < 16; i++)
+                    for (int i = 0; i < 64; i++)
                     {
                         colors[i] = 0xFFFFFF;
                     }
 
-                    var lEDData = GetLEDData(colors, 16, 1.0f);
+                    var lEDData = GetLEDData(colors, 64, 1.0f);
 
                     SendStartAction(0, lEDData.FanIndex + 1);
                     SendColorData(0, (lEDData.FanIndex + 1) * 16, lEDData.LEDData);
@@ -53,7 +53,7 @@ namespace LEDPlayground
 
         static public LEDDataAndFans GetLEDData(uint[] colors, int num_colors, float brightness)
         {
-            byte[] led_data = new byte[16 * 6 * 3];
+            byte[] led_data = new byte[64 * 6 * 3];
             int fan_idx = 0;
             int mod_led_idx;
             int cur_led_idx;
