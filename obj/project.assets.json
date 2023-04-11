@@ -1,0 +1,110 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "HidSharp/2.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/HidSharp.dll": {
+            "related": ".pdb;.XML"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/HidSharp.dll": {
+            "related": ".pdb;.XML"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "HidSharp/2.1.0": {
+      "sha512": "UTdxWvbgp2xzT1Ajaa2va+Qi3oNHJPasYmVhbKI2VVdu1VYP6yUG+RikhsHvpD7iM0S8e8UYb5Qm/LTWxx9QAA==",
+      "type": "package",
+      "path": "hidsharp/2.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "HidSharp.chm",
+        "hidsharp.2.1.0.nupkg.sha512",
+        "hidsharp.nuspec",
+        "lib/net35/HidSharp.XML",
+        "lib/net35/HidSharp.dll",
+        "lib/net35/HidSharp.pdb",
+        "lib/netstandard2.0/HidSharp.XML",
+        "lib/netstandard2.0/HidSharp.dll",
+        "lib/netstandard2.0/HidSharp.pdb"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "HidSharp >= 2.1.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Jimmy'sPC\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\Git\\LEDPlayground\\LEDPlayground.csproj",
+      "projectName": "LEDPlayground",
+      "projectPath": "D:\\Git\\LEDPlayground\\LEDPlayground.csproj",
+      "packagesPath": "C:\\Users\\Jimmy'sPC\\.nuget\\packages\\",
+      "outputPath": "D:\\Git\\LEDPlayground\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Jimmy'sPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://www.nuget.org/api/v2": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
+        "dependencies": {
+          "HidSharp": {
+            "target": "Package",
+            "version": "[2.1.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
