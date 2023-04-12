@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
-using System.Threading.Channels;
 using HidSharp;
 
 namespace LEDPlayground
@@ -13,6 +8,13 @@ namespace LEDPlayground
     internal class Program
     {
         static HidStream _stream;
+        const int UNIHUB_SLV2_LED_MODE_STATIC_COLOR = 1;
+        const int UNIHUB_SLV2_LED_SPEED_000 = 2;
+        const int UNIHUB_SLV2_LED_DIRECTION_LTR = 0;
+        const int UNIHUB_SLV2_LED_BRIGHTNESS_100 = 0;
+        const byte UNIHUB_SLV2_TRANSACTION_ID = 224;
+        const int ONE_FAN_LED_COUNT = 16;
+        const int FOUR_FAN_LED_COUNT = ONE_FAN_LED_COUNT * 4;
         static void Main(string[] args)
         {
             var deviceList = DeviceList.Local;
@@ -26,17 +28,17 @@ namespace LEDPlayground
                 {
                     deviceInfo.TryOpen(out HidStream stream);
                     _stream = stream;
-                    uint[] colors = new uint[64];
+                    uint[] colors = new uint[FOUR_FAN_LED_COUNT];
 
-                    for (int i = 0; i < 64; i++)
+                    for (int i = 0; i < FOUR_FAN_LED_COUNT; i++)
                     {
                         colors[i] = 0xFFFFFF;
                     }
 
-                    var lEDData = GetLEDData(colors, 64, 1.0f);
+                    var lEDData = GetLEDData(colors, FOUR_FAN_LED_COUNT, 1f);
 
                     SendStartAction(0, lEDData.FanIndex + 1);
-                    SendColorData(0, (lEDData.FanIndex + 1) * 16, lEDData.LEDData);
+                    SendColorData(0, (lEDData.FanIndex + 1) * ONE_FAN_LED_COUNT, lEDData.LEDData);
                     SendCommitAction(0, UNIHUB_SLV2_LED_MODE_STATIC_COLOR, UNIHUB_SLV2_LED_SPEED_000, UNIHUB_SLV2_LED_DIRECTION_LTR, UNIHUB_SLV2_LED_BRIGHTNESS_100);
                     Console.WriteLine("風扇顏色已設置為純白色。");
                 }
@@ -53,7 +55,7 @@ namespace LEDPlayground
 
         static public LEDDataAndFans GetLEDData(uint[] colors, int num_colors, float brightness)
         {
-            byte[] led_data = new byte[64 * 6 * 3];
+            byte[] led_data = new byte[FOUR_FAN_LED_COUNT * 6 * 3];
             int fan_idx = 0;
             int mod_led_idx;
             int cur_led_idx;
@@ -65,30 +67,27 @@ namespace LEDPlayground
 
             for (int led_idx = 0; led_idx < num_colors; led_idx++)
             {
-                mod_led_idx = (led_idx % 16);
+                mod_led_idx = (led_idx % ONE_FAN_LED_COUNT);
 
                 if (mod_led_idx == 0 && led_idx != 0)
                 {
                     fan_idx++;
                 }
 
-                float brightness_scale = brightness * BrightnessLimit(colors[led_idx]);
-
                 // Determine current position of led_data array from colors array
-                cur_led_idx = ((mod_led_idx + (fan_idx * 16)) * 3);
+                cur_led_idx = ((mod_led_idx + (fan_idx * ONE_FAN_LED_COUNT)) * 3);
 
-                led_data[cur_led_idx + 0] = (byte)(RGBGetRValue(colors[led_idx]) * brightness_scale);
-                led_data[cur_led_idx + 1] = (byte)(RGBGetBValue(colors[led_idx]) * brightness_scale);
-                led_data[cur_led_idx + 2] = (byte)(RGBGetGValue(colors[led_idx]) * brightness_scale);
+                led_data[cur_led_idx + 0] = (byte)(RGBGetRValue(colors[led_idx]) * brightness);
+                led_data[cur_led_idx + 1] = (byte)(RGBGetBValue(colors[led_idx]) * brightness);
+                led_data[cur_led_idx + 2] = (byte)(RGBGetGValue(colors[led_idx]) * brightness);
             }
             var result = new LEDDataAndFans() { LEDData = led_data, FanIndex = fan_idx };
             return result;
         }
-        private const byte UNIHUB_SLV2_TRANSACTION_ID = 224;
 
         static public void SendStartAction(byte channel, int numFans)
         {
-            byte[] usbBuf = new byte[64];
+            byte[] usbBuf = new byte[FOUR_FAN_LED_COUNT];
 
             usbBuf[0x00] = UNIHUB_SLV2_TRANSACTION_ID;
             usbBuf[0x01] = 0x10;
@@ -114,7 +113,7 @@ namespace LEDPlayground
 
         static public void SendCommitAction(byte channel, byte effect, byte speed, int direction, int brightness)
         {
-            byte[] usbBuf = new byte[64];
+            byte[] usbBuf = new byte[FOUR_FAN_LED_COUNT];
 
             usbBuf[0x00] = UNIHUB_SLV2_TRANSACTION_ID;
             usbBuf[0x01] = (byte)(0x10 + channel);
@@ -125,13 +124,6 @@ namespace LEDPlayground
 
             _stream.Write(usbBuf);
             Thread.Sleep(5);
-        }
-
-        // 以下是一些額外的函數，你可能需要自行實現這些函數
-        static float BrightnessLimit(uint color)
-        {
-            // TODO: 根據你的需求實現此函數
-            return 1f;
         }
 
         static byte RGBGetRValue(uint color)
@@ -148,26 +140,6 @@ namespace LEDPlayground
         {
             return (byte)(color & 0xFF);
         }
-
-        //void SendStartAction(byte channel, int numOfFans)
-        //{
-        //    // TODO: 實現此函數以發送開始操作
-        //}
-
-        //void SendColorData(byte channel, int numOfLEDs, byte[] ledData)
-        //{
-        //    // TODO: 實現此函數以發送顏色數據
-        //}
-
-        //void SendCommitAction(byte channel, int effect, int speed, int direction, int brightness)
-        //{
-        //    // TODO: 實現此函數以發送提交操作
-        //}
-        // 還需定義以下常量
-        const int UNIHUB_SLV2_LED_MODE_STATIC_COLOR = 1;
-        const int UNIHUB_SLV2_LED_SPEED_000 = 2;
-        const int UNIHUB_SLV2_LED_DIRECTION_LTR = 0;
-        const int UNIHUB_SLV2_LED_BRIGHTNESS_100 = 0;
     }
 }
 public class LEDDataAndFans
