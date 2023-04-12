@@ -55,6 +55,12 @@ namespace LEDPlayground
 
         static public LEDDataAndFans GetLEDData(uint[] colors, int num_colors, float brightness)
         {
+            // LED bright save.
+            if (brightness > 1)
+            {
+                brightness = 1;
+            }
+
             byte[] led_data = new byte[FOUR_FAN_LED_COUNT * 6 * 3];
             int fan_idx = 0;
             int mod_led_idx;
