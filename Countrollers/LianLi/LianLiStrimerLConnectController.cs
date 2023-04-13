@@ -10,7 +10,7 @@ namespace LEDPlayground.Countrollers.LianLi
     public class LianLiStrimerLConnectController
     {
         static HidStream _stream;
-        public LianLiStrimerLConnectController(uint color, byte channel)
+        public LianLiStrimerLConnectController(uint color)
         {
             var deviceList = DeviceList.Local;
             var deviceInfo = deviceList.GetHidDevices(0x0CF2, 0xA200).FirstOrDefault();
@@ -26,22 +26,20 @@ namespace LEDPlayground.Countrollers.LianLi
 
                     // 設置模式
                     byte modeValue = 1;       // 使用自定義模式
-                    int speed = 0;           // 速度
+                    int speed = 1;           // 速度
                     int brightness = 0;      // 亮度
                     int direction = 0;       // 方向
 
-                    // 假設每個 LED 都設置為純白色
-                    int ledsCount = 20;      // 20 個 LED
-                    byte[] colors = new byte[ledsCount * 3];
-                    for (int i = 0; i < ledsCount * 3; i += 3)
-                    {
-                        colors[i] = 0xFF;   // R
-                        colors[i + 1] = 0xFF; // G
-                        colors[i + 2] = 0xFF; // B
-                    }
                     var zones = GetZones();
                     for(int zoneIndex = 0; zoneIndex < zones.Count(); zoneIndex++)
                     {
+                        // 假設每個 LED 都設置為純白色
+                        int ledsCount = zones[zoneIndex].LedsCount;
+                        uint[] colors = new uint[ledsCount];
+                        for (int i = 0; i < ledsCount; i ++)
+                        {
+                            colors[i] = color;
+                        }
                         SetLedsDirect((byte)zoneIndex, colors, ledsCount);
                         SetMode(modeValue, (byte)zoneIndex, speed, brightness, direction);
                     }
@@ -98,13 +96,13 @@ namespace LEDPlayground.Countrollers.LianLi
             return zones;
         }
 
-        public byte[] SetLedsDirect(byte zone, byte[] ledColors, int ledCount)
+        public byte[] SetLedsDirect(byte zone, uint[] ledColors, int ledCount)
         {
             const int StrimerLConnectPacketSize = 254;
             const int StrimerLConnectReportId = 224;
             const int StrimerLConnectColourCommand = 48;
             const int StrimerLConnectCommandByte = 1;
-            const int StrimerLConnectDataByte = 4;
+            const int StrimerLConnectDataByte = 2;
 
             byte[] buffer = new byte[StrimerLConnectPacketSize];
             buffer[0] = StrimerLConnectReportId;
@@ -125,7 +123,7 @@ namespace LEDPlayground.Countrollers.LianLi
         }
         static byte RGBGetRValue(uint color)
         {
-            return (byte)((color >> 16) & 0xFF);
+            return (byte)(color & 0xFF);
         }
 
         static byte RGBGetGValue(uint color)
@@ -135,7 +133,7 @@ namespace LEDPlayground.Countrollers.LianLi
 
         static byte RGBGetBValue(uint color)
         {
-            return (byte)(color & 0xFF);
+            return (byte)((color >> 16) & 0xFF);
         }
 
         public byte[] SetMode(byte mode, byte zone, int speed, int brightness, int direction)
