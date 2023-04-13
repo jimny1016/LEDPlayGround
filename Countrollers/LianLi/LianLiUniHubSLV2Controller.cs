@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using HidSharp;
 
-namespace LEDPlayground
+namespace LEDPlayground.Countrollers.LianLi
 {
     public class LianLiUniHubSLV2Controller
     {

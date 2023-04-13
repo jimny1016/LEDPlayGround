@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Threading;
-using HidSharp;
+using LEDPlayground.Countrollers.LianLi;
 
 namespace LEDPlayground
 {
@@ -10,7 +8,8 @@ namespace LEDPlayground
         static void Main(string[] args)
         {
             Console.WriteLine("Hello world");
-            new LianLiUniHubSLV2Controller(0xFFFFFF, 1);
+            //new LianLiUniHubSLV2Controller(0xFFFFFF, 1);
+            new LianLiStrimerLConnectController(0xFFFFFF, 1);
         }
 
     }
