@@ -10,6 +10,22 @@ namespace LEDPlayground.Countrollers.LianLi
     public class LianLiStrimerLConnectController
     {
         static HidStream _stream;
+        const int STRIMER_L_CONNECT_PACKET_SIZE = 254;
+        const int STRIMER_L_CONNECT_REPORT_ID = 224;
+        const int STRIMER_L_CONNECT_COMMAND_BYTE = 1;
+        const int STRIMER_L_CONNECT_COLOUR_COMMAND = 48;
+        const int STRIMER_L_CONNECT_DATA_BYTE = 2;
+        const int STRIMER_L_CONNECT_MODE_COLOUR_COMMAND = 16;
+
+        // 設置模式
+        const byte mode = 1;       // 使用自定義模式
+        const int speed = 1;           // 速度
+        const int brightness = 0;      // 亮度
+        const int direction = 0;       // 方向
+
+        readonly byte[] speed_data = { 0x02, 0x01, 0x00, 0xFE, 0xFF };
+        readonly byte[] brightness_data = { 0x08, 0x03, 0x02, 0x01, 0x00 };
+
         public LianLiStrimerLConnectController(uint color)
         {
             var deviceList = DeviceList.Local;
@@ -24,12 +40,6 @@ namespace LEDPlayground.Countrollers.LianLi
                     deviceInfo.TryOpen(out HidStream stream);
                     _stream = stream;
 
-                    // 設置模式
-                    byte modeValue = 1;       // 使用自定義模式
-                    int speed = 1;           // 速度
-                    int brightness = 0;      // 亮度
-                    int direction = 0;       // 方向
-
                     var zones = GetZones();
                     for(int zoneIndex = 0; zoneIndex < zones.Count(); zoneIndex++)
                     {
@@ -41,7 +51,7 @@ namespace LEDPlayground.Countrollers.LianLi
                             colors[i] = color;
                         }
                         SetLedsDirect((byte)zoneIndex, colors, ledsCount);
-                        SetMode(modeValue, (byte)zoneIndex, speed, brightness, direction);
+                        SetMode((byte)zoneIndex);
                     }
                     SetApply();
                     Console.WriteLine("顏色已設置為純白色。");
@@ -58,36 +68,38 @@ namespace LEDPlayground.Countrollers.LianLi
         }
         public List<Zone> GetZones()
         {
-            const int STRIMERLCONNECT_STRIP_COUNT = 12;
-            const int zoneSplit = STRIMERLCONNECT_STRIP_COUNT / 2;
-            const string ZONE_TYPE_LINEAR = "1";
+            const int strimerlConnectStripCount = 12;
+            const int zoneSplite = strimerlConnectStripCount / 2;
+            const string zoneTypeLinear = "1";
+            const int pin24LEDCount = 20;
+            const int pin8LEDCount = 27;
 
             List<Zone> zones = new List<Zone>();
 
-            for (int zoneIdx = 0; zoneIdx < zoneSplit; zoneIdx++)
+            for (int zoneIdx = 0; zoneIdx < zoneSplite; zoneIdx++)
             {
                 Zone newZone = new Zone
                 {
                     Name = $"24 Pin ATX Strip {zoneIdx}",
-                    Type = ZONE_TYPE_LINEAR,
-                    LedsMin = 20,
-                    LedsMax = 20,
-                    LedsCount = 20,
+                    Type = zoneTypeLinear,
+                    LedsMin = pin24LEDCount,
+                    LedsMax = pin24LEDCount,
+                    LedsCount = pin24LEDCount,
                     MatrixMap = null
                 };
 
                 zones.Add(newZone);
             }
 
-            for (int zoneIdx = zoneSplit; zoneIdx < STRIMERLCONNECT_STRIP_COUNT; zoneIdx++)
+            for (int zoneIdx = zoneSplite; zoneIdx < strimerlConnectStripCount; zoneIdx++)
             {
                 Zone newZone = new Zone
                 {
-                    Name = $"8 Pin GPU Strip {zoneIdx - zoneSplit}",
-                    Type = ZONE_TYPE_LINEAR,
-                    LedsMin = 27,
-                    LedsMax = 27,
-                    LedsCount = 27,
+                    Name = $"8 Pin GPU Strip {zoneIdx - zoneSplite}",
+                    Type = zoneTypeLinear,
+                    LedsMin = pin8LEDCount,
+                    LedsMax = pin8LEDCount,
+                    LedsCount = pin8LEDCount,
                     MatrixMap = null
                 };
 
@@ -98,21 +110,15 @@ namespace LEDPlayground.Countrollers.LianLi
 
         public byte[] SetLedsDirect(byte zone, uint[] ledColors, int ledCount)
         {
-            const int StrimerLConnectPacketSize = 254;
-            const int StrimerLConnectReportId = 224;
-            const int StrimerLConnectColourCommand = 48;
-            const int StrimerLConnectCommandByte = 1;
-            const int StrimerLConnectDataByte = 2;
+            byte[] buffer = new byte[STRIMER_L_CONNECT_PACKET_SIZE];
+            buffer[0] = STRIMER_L_CONNECT_REPORT_ID;
+            buffer[1] = STRIMER_L_CONNECT_COLOUR_COMMAND;
 
-            byte[] buffer = new byte[StrimerLConnectPacketSize];
-            buffer[0] = StrimerLConnectReportId;
-            buffer[1] = StrimerLConnectColourCommand;
-
-            buffer[StrimerLConnectCommandByte] |= zone;
+            buffer[STRIMER_L_CONNECT_COMMAND_BYTE] |= zone;
 
             for (int i = 0; i < ledCount; i++)
             {
-                int offset = (3 * i) + StrimerLConnectDataByte;
+                int offset = (3 * i) + STRIMER_L_CONNECT_DATA_BYTE;
 
                 buffer[offset] = RGBGetRValue(ledColors[i]); // R
                 buffer[offset + 1] = RGBGetBValue(ledColors[i]); // B
@@ -136,20 +142,13 @@ namespace LEDPlayground.Countrollers.LianLi
             return (byte)((color >> 16) & 0xFF);
         }
 
-        public byte[] SetMode(byte mode, byte zone, int speed, int brightness, int direction)
-        {
-            const int StrimerLConnectPacketSize = 254;
-            const int StrimerLConnectReportId = 224;
-            const int StrimerLConnectColourCommand = 16;
-            const int StrimerLConnectCommandByte = 1;
-            byte[] speed_data = { 0x02, 0x01, 0x00, 0xFE, 0xFF };
-            byte[] brightness_data = { 0x08, 0x03, 0x02, 0x01, 0x00 };
-            
-            byte[] buffer = new byte[StrimerLConnectPacketSize];
-            buffer[0] = StrimerLConnectReportId;
-            buffer[1] = StrimerLConnectColourCommand;
+        public byte[] SetMode(byte zone)
+        {            
+            byte[] buffer = new byte[STRIMER_L_CONNECT_PACKET_SIZE];
+            buffer[0] = STRIMER_L_CONNECT_REPORT_ID;
+            buffer[1] = STRIMER_L_CONNECT_MODE_COLOUR_COMMAND;
 
-            buffer[StrimerLConnectCommandByte] |= zone;
+            buffer[STRIMER_L_CONNECT_COMMAND_BYTE] |= zone;
 
             buffer[2] = mode;
             buffer[3] = speed_data[speed];
@@ -161,11 +160,8 @@ namespace LEDPlayground.Countrollers.LianLi
         }
         public byte[] SetApply()
         {
-            const int StrimerLConnectPacketSize = 254;
-            const int StrimerLConnectReportId = 224;
-
-            byte[] buffer = new byte[StrimerLConnectPacketSize];
-            buffer[0] = StrimerLConnectReportId;
+            byte[] buffer = new byte[STRIMER_L_CONNECT_PACKET_SIZE];
+            buffer[0] = STRIMER_L_CONNECT_REPORT_ID;
             buffer[1] = 0x2C;
             buffer[2] = 0x0F;
             buffer[3] = 0xFF;
