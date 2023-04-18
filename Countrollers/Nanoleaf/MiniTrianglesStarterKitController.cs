@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace LEDPlayground.Countrollers.Nanoleaf
 {
@@ -12,10 +13,18 @@ namespace LEDPlayground.Countrollers.Nanoleaf
         private static readonly string NanoleafKey = "ZS8z5Gir4FsUSZ0PM3GVASOAiDKpUVov";
         public static async Task Test()
         {
-            await CreateAndApplyWhitePulseEffectAsync(NanoleafIP, NanoleafKey);
+            var animDatas = new string[] { "1 6141 1 100 100 100 0 0", "1 6141 1 255 0 0 0 0", "1 6141 1 0 255 0 0 0", "1 6141 1 0 0 255 0 0", "1 6141 1 0 125 130 0 0", "1 6141 1 130 125 0 0 0", "1 6141 1 130 0 125 0 0" };
+            int index = 0;
+
+            while (true)
+            {
+                await CreateAndApplyWhitePulseEffectAsync(NanoleafIP, NanoleafKey, animDatas[index % 7]);
+                Thread.Sleep(15);
+                index++;
+            }
         }
 
-        private static async Task CreateAndApplyWhitePulseEffectAsync(string ip, string key)
+        private static async Task CreateAndApplyWhitePulseEffectAsync(string ip, string key, string animData)
         {
             using var httpClient = new HttpClient();
 
@@ -30,7 +39,7 @@ namespace LEDPlayground.Countrollers.Nanoleaf
                     command = "display",
                     version = "1.0",
                     animType = "custom",
-                    animData = "1 6141 1 100 100 100 0 100", // 每個動畫數據字段解釋：[Panel ID] [R] [G] [B] [亮度(0-100)] [持續時間(毫秒)] [延遲(毫秒)]
+                    animData = animData, // 每個動畫數據字段解釋：[Panel ID] [R] [G] [B] [亮度(0-100)] [持續時間(毫秒)] [延遲(毫秒)]
                     loop = false,
                     palette = new object[] { }
                 }
