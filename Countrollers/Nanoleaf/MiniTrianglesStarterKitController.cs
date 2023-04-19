@@ -13,13 +13,14 @@ namespace LEDPlayground.Countrollers.Nanoleaf
         private static readonly string NanoleafKey = "ZS8z5Gir4FsUSZ0PM3GVASOAiDKpUVov";
         public static async Task Test()
         {
-            var animDatas = new string[] { "1 6141 1 100 100 100 0 0", "1 6141 1 255 0 0 0 0", "1 6141 1 0 255 0 0 0", "1 6141 1 0 0 255 0 0", "1 6141 1 0 125 130 0 0", "1 6141 1 130 125 0 0 0", "1 6141 1 130 0 125 0 0" };
+            string delay = "0";
+            var animDatas = new string[] { $"1 6141 1 0 125 255 0 {delay}", $"1 6141 1 255 0 0 0 {delay}", $"1 6141 1 255 125 0 0 {delay}", $"1 6141 1 255 255 0 0 {delay}", $"1 6141 1 125 255 0 0 {delay}", $"1 6141 1 0 255 0 0 {delay}", $"1 6141 1 0 255 125 0 {delay}" };
             int index = 0;
 
             while (true)
             {
                 await CreateAndApplyWhitePulseEffectAsync(NanoleafIP, NanoleafKey, animDatas[index % 7]);
-                Thread.Sleep(15);
+                Thread.Sleep(20);
                 index++;
             }
         }
