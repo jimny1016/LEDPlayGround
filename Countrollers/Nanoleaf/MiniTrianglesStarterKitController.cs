@@ -14,7 +14,7 @@ namespace LEDPlayground.Countrollers.Nanoleaf
         public static async Task Test()
         {
             string delay = "0";
-            var animDatas = new string[] { $"1 6141 1 0 125 255 0 {delay}", $"1 6141 1 255 0 0 0 {delay}", $"1 6141 1 255 125 0 0 {delay}", $"1 6141 1 255 255 0 0 {delay}", $"1 6141 1 125 255 0 0 {delay}", $"1 6141 1 0 255 0 0 {delay}", $"1 6141 1 0 255 125 0 {delay}" };
+            var animDatas = new string[] { $"1 6141 1 0 125 255 0 {delay} 1 65443 1 0 125 255 0 {delay}", $"1 6141 1 255 0 0 0 {delay}", $"1 6141 1 255 125 0 0 {delay}", $"1 6141 1 255 255 0 0 {delay}", $"1 6141 1 125 255 0 0 {delay}", $"1 6141 1 0 255 0 0 {delay}", $"1 6141 1 0 255 125 0 {delay}" };
             int index = 0;
 
             while (true)
@@ -53,7 +53,6 @@ namespace LEDPlayground.Countrollers.Nanoleaf
 
             // 發送 PUT 請求以設置 Light Panels 的特效
             var response = await httpClient.PutAsync($"http://{ip}:16021/api/v1/{key}/effects", content);
-
             if (response.IsSuccessStatusCode)
             {
                 Console.WriteLine("已創建並應用純白色 100 毫秒從亮度 100 到 0 循環特效。");
