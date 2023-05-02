@@ -8,7 +8,7 @@ namespace Interview
 {
     internal class Interview20230428
     {
-        static void Main(string[] args)
+        public Interview20230428()
         {
             Console.WriteLine("Welcome to our interview.");
             Console.WriteLine("Complete the following two questions at first.");

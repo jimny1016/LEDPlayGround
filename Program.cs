@@ -13,7 +13,7 @@ namespace LEDPlayground
             //new LianLiUniHubSLV2Controller(0xFFFFFF, 1);
             //new LianLiStrimerLConnectController(0xFFFFFF);
             //await MiniTrianglesStarterKitController.Test();
+            new HueBridge();
         }
-
     }
 }

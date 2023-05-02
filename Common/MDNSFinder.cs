@@ -13,6 +13,6 @@ public class MDNSFinder
 
     public async Task<IReadOnlyList<IZeroconfHost>> FindDevicesAsync()
     {
-        return await ZeroconfResolver.ResolveAsync(_serviceType);
+        return await ZeroconfResolver.ResolveAsync(_serviceType, scanTime: new System.TimeSpan(6000));
     }
 }

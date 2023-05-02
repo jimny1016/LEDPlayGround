@@ -7,13 +7,21 @@ using Newtonsoft.Json;
 
 public class HttpClientManager
 {
-    private HttpClient _httpClient;
+    private readonly HttpClient _httpClient;
     private string _domain;
 
     public HttpClientManager(string domain)
     {
-        _httpClient = new HttpClient();
-        _httpClient.Timeout = TimeSpan.FromSeconds(10);
+        HttpClientHandler handler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => {
+                return true;
+            }
+        };
+        _httpClient = new HttpClient(handler)
+        {
+            Timeout = TimeSpan.FromSeconds(10)
+        };
         _domain = domain;
     }
 
