@@ -5,6 +5,18 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LEDPlayground", "LEDPlayground.csproj", "{170D2F51-0454-4508-9D15-CD8C24199253}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HueApi", "lib\HueApi\HueApi.csproj", "{FEE62C38-F9F3-4B23-9A8F-355275C711BA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HueApi.ColorConverters", "lib\HueApi.ColorConverters\HueApi.ColorConverters.csproj", "{BC3304B1-81A1-4CEA-B34A-928BB53D2649}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HueApi.Entertainment", "lib\HueApi.Entertainment\HueApi.Entertainment.csproj", "{25F47C1F-B788-4703-A9AC-DC986674BD4E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Q42.HueApi", "lib\Q42.HueApi\Q42.HueApi.csproj", "{2EA287C9-2BFE-479A-987D-4B4E4C0FB960}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Q42.HueApi.ColorConverters", "lib\Q42.HueApi.ColorConverters\Q42.HueApi.ColorConverters.csproj", "{C659F27C-2052-44A4-BEDC-8E80F7DB2BCC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Q42.HueApi.Streaming", "lib\Q42.HueApi.Streaming\Q42.HueApi.Streaming.csproj", "{7B09884D-8CBA-4510-861E-70D2B45A2430}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +27,30 @@ Global
 		{170D2F51-0454-4508-9D15-CD8C24199253}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{170D2F51-0454-4508-9D15-CD8C24199253}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{170D2F51-0454-4508-9D15-CD8C24199253}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEE62C38-F9F3-4B23-9A8F-355275C711BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEE62C38-F9F3-4B23-9A8F-355275C711BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEE62C38-F9F3-4B23-9A8F-355275C711BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEE62C38-F9F3-4B23-9A8F-355275C711BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC3304B1-81A1-4CEA-B34A-928BB53D2649}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC3304B1-81A1-4CEA-B34A-928BB53D2649}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC3304B1-81A1-4CEA-B34A-928BB53D2649}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC3304B1-81A1-4CEA-B34A-928BB53D2649}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25F47C1F-B788-4703-A9AC-DC986674BD4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25F47C1F-B788-4703-A9AC-DC986674BD4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25F47C1F-B788-4703-A9AC-DC986674BD4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25F47C1F-B788-4703-A9AC-DC986674BD4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EA287C9-2BFE-479A-987D-4B4E4C0FB960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EA287C9-2BFE-479A-987D-4B4E4C0FB960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EA287C9-2BFE-479A-987D-4B4E4C0FB960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EA287C9-2BFE-479A-987D-4B4E4C0FB960}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C659F27C-2052-44A4-BEDC-8E80F7DB2BCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C659F27C-2052-44A4-BEDC-8E80F7DB2BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C659F27C-2052-44A4-BEDC-8E80F7DB2BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C659F27C-2052-44A4-BEDC-8E80F7DB2BCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B09884D-8CBA-4510-861E-70D2B45A2430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B09884D-8CBA-4510-861E-70D2B45A2430}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B09884D-8CBA-4510-861E-70D2B45A2430}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B09884D-8CBA-4510-861E-70D2B45A2430}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

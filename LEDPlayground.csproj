@@ -6,10 +6,39 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BouncyCastle.NetCore" Version="1.9.0" />
+    <Compile Remove="lib\HueApi.ColorConverters\**" />
+    <Compile Remove="lib\HueApi.Entertainment\**" />
+    <Compile Remove="lib\HueApi\**" />
+    <Compile Remove="lib\Q42.HueApi.ColorConverters\**" />
+    <Compile Remove="lib\Q42.HueApi.Streaming\**" />
+    <Compile Remove="lib\Q42.HueApi\**" />
+    <EmbeddedResource Remove="lib\HueApi.ColorConverters\**" />
+    <EmbeddedResource Remove="lib\HueApi.Entertainment\**" />
+    <EmbeddedResource Remove="lib\HueApi\**" />
+    <EmbeddedResource Remove="lib\Q42.HueApi.ColorConverters\**" />
+    <EmbeddedResource Remove="lib\Q42.HueApi.Streaming\**" />
+    <EmbeddedResource Remove="lib\Q42.HueApi\**" />
+    <None Remove="lib\HueApi.ColorConverters\**" />
+    <None Remove="lib\HueApi.Entertainment\**" />
+    <None Remove="lib\HueApi\**" />
+    <None Remove="lib\Q42.HueApi.ColorConverters\**" />
+    <None Remove="lib\Q42.HueApi.Streaming\**" />
+    <None Remove="lib\Q42.HueApi\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HidSharp" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Zeroconf" Version="3.6.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="lib\HueApi.ColorConverters\HueApi.ColorConverters.csproj" />
+    <ProjectReference Include="lib\HueApi.Entertainment\HueApi.Entertainment.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="lib\" />
   </ItemGroup>
 
 </Project>
