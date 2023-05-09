@@ -112,7 +112,7 @@ namespace LEDPlayground.Countrollers.Philips
 
             StreamingGroup stream = Task.Run(() => SetupAndReturnGroup()).Result;
             var baseEntLayer = stream.GetNewLayer(isBaseLayer: true);
-            baseEntLayer.AutoCalculateEffectUpdate(new CancellationToken());
+            //baseEntLayer.AutoCalculateEffectUpdate(new CancellationToken());
             CancellationTokenSource cst = new CancellationTokenSource();
             baseEntLayer.SetState(cst.Token, new RGBColor("F00FFF"), 0.75);
             cst = WaitCancelAndNext(cst); 
