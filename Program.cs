@@ -1,8 +1,18 @@
 ﻿using System;
-using System.Threading.Tasks;
-using LEDPlayground.Countrollers.LianLi;
-using LEDPlayground.Countrollers.Nanoleaf;
-using LEDPlayground.Countrollers.Philips;
+using System.IO;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
+using System.Management;
+using AuraServiceLib;
+using System.Xml.Linq;
+using LEDPlayground.Countrollers.ASUS;
+using CUESDK;
+using HidSharp;
+using System.Linq;
+using System.Threading.Channels;
+using System.Drawing;
+using System.Collections.Generic;
+using LEDPlayground.Countrollers.Corsair;
 
 namespace LEDPlayground
 {
@@ -10,11 +20,7 @@ namespace LEDPlayground
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello world");
-            //new LianLiUniHubSLV2Controller(0xFFFFFF, 1);
-            //new LianLiStrimerLConnectController(0xFFFFFF);
-            //await MiniTrianglesStarterKitController.Test();
-            new HueBridge();
+            new LightingCommanderCoreController();
         }
     }
 }

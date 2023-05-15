@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace HueApi.Models.Requests.SmartScene
 {
   public class SmartSceneRecall
   {
-    [JsonPropertyName("action")]
+    [JsonProperty("action")]
     public SmartSceneRecallAction Action { get; set; } = default!;
   }
 
-  [JsonConverter(typeof(JsonStringEnumConverter))]
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum SmartSceneRecallAction
   {
     activate, deactivate

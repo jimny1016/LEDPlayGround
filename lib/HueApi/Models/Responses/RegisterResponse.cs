@@ -1,24 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace HueApi.Models.Responses
 {
-  public class RegisterResponse
-  {
-    [JsonPropertyName("success")]
-    public RegisterResult Success { get; } = default!;
-  }
+    public class RegisterResponse
+    {
+        [JsonProperty("success")]
+        public RegisterResult Success { get; } = default!;
+    }
 
-  public class RegisterResult
-  {
-    [JsonPropertyName("username")]
-    public string Username { get; } = default!;
+    public class RegisterResult
+    {
+        [JsonProperty("username")]
+        public string Username { get; } = default!;
 
-    [JsonPropertyName("clientkey")]
-    public string? ClientKey { get; set; }
-  }
+        [JsonProperty("clientkey")]
+        public string? ClientKey { get; set; }
+    }
 }

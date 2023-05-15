@@ -1,21 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace HueApi.BridgeLocator
 {
-  public class DiscoveryResponse
-  {
-    [JsonPropertyName("id")]
-    public string Id { get; set; } = default!;
+    public class DiscoveryResponse
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; } = default!;
 
-    [JsonPropertyName("internalipaddress")]
-    public string InternalIpAddress { get; set; } = default!;
+        [JsonProperty("internalipaddress")]
+        public string InternalIpAddress { get; set; } = default!;
 
-    [JsonPropertyName("port")]
-    public int Port { get; set; }
-  }
+        [JsonProperty("port")]
+        public int Port { get; set; }
+    }
 }

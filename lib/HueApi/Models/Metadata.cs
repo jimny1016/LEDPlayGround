@@ -1,18 +1,18 @@
 using System.Diagnostics;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace HueApi.Models
 {
   [DebuggerDisplay("{Name} {Archetype}")]
   public class Metadata
   {
-    [JsonPropertyName("name")]
+    [JsonProperty("name")]
     public string Name { get; set; } = default!;
 
-    [JsonPropertyName("archetype")]
+    [JsonProperty("archetype")]
     public string? Archetype { get; set; }
 
-    [JsonPropertyName("image")]
+    [JsonProperty("image")]
     public ResourceIdentifier? Image { get; set; }
   }
 }

@@ -1,35 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace HueApi.Models.Requests
 {
   public class UpdateScene : BaseResourceRequest
   {
-    [JsonPropertyName("actions")]
+    [JsonProperty("actions")]
     public List<SceneAction>? Actions { get; set; }
 
-    [JsonPropertyName("recall")]
+    [JsonProperty("recall")]
     public Recall? Recall { get; set; }
 
-    [JsonPropertyName("palette")]
+    [JsonProperty("palette")]
     public Palette? Palette { get; set; }
 
-    [JsonPropertyName("speed")]
+    [JsonProperty("speed")]
     public double? Speed { get; set; }
 
   }
 
-  [JsonConverter(typeof(JsonStringEnumConverter))]
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum SceneRecallAction
   {
     active, dynamic_palette
   }
 
-  [JsonConverter(typeof(JsonStringEnumConverter))]
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum SceneRecallStatus
   {
     active, dynamic_palette
@@ -37,16 +33,16 @@ namespace HueApi.Models.Requests
 
   public class Recall
   {
-    [JsonPropertyName("action")]
+    [JsonProperty("action")]
     public SceneRecallAction? Action { get; set; }
 
-    [JsonPropertyName("status")]
+    [JsonProperty("status")]
     public SceneRecallStatus? Status { get; set; }
 
-    [JsonPropertyName("duration")]
+    [JsonProperty("duration")]
     public int? Duration { get; set; }
 
-    [JsonPropertyName("dimming")]
+    [JsonProperty("dimming")]
     public Dimming? Dimming { get; set; }
   }
 }

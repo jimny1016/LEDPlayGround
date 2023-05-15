@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -27,18 +27,39 @@
   </ItemGroup>
 
   <ItemGroup>
+    <COMReference Include="AuraServiceLib">
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>f1aa5209-5217-4b82-ba7e-a68198999afa</Guid>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle.NetCore" Version="1.9.0" />
+    <PackageReference Include="CUESDK.NET" Version="3.0.378.1" />
     <PackageReference Include="HidSharp" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Management" Version="7.0.1" />
     <PackageReference Include="Zeroconf" Version="3.6.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="Countrollers\Philips\" />
+    <Folder Include="lib\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="lib\HueApi.ColorConverters\HueApi.ColorConverters.csproj" />
     <ProjectReference Include="lib\HueApi.Entertainment\HueApi.Entertainment.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="lib\" />
+    <ProjectReference Include="lib\HueApi\HueApi.csproj" />
+    <ProjectReference Include="lib\Q42.HueApi.ColorConverters\Q42.HueApi.ColorConverters.csproj" />
+    <ProjectReference Include="lib\Q42.HueApi.Streaming\Q42.HueApi.Streaming.csproj" />
+    <ProjectReference Include="lib\Q42.HueApi\Q42.HueApi.csproj" />
   </ItemGroup>
 
 </Project>

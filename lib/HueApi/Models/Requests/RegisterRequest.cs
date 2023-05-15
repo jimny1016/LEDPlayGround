@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace HueApi.Models.Requests
 {
@@ -14,10 +9,10 @@ namespace HueApi.Models.Requests
       DeviceType = deviceType;
     }
 
-    [JsonPropertyName("devicetype")]
+    [JsonProperty("devicetype")]
     public string DeviceType { get; }
 
-    [JsonPropertyName("generateclientkey")]
+    [JsonProperty("generateclientkey")]
     public bool GenerateClientKey { get; set; } = true;
   }
 }

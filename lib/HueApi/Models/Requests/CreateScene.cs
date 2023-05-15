@@ -1,32 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace HueApi.Models.Requests
 {
-  public class CreateScene : BaseResourceRequest
-  {
-    public CreateScene(Metadata metadata, ResourceIdentifier group)
+    public class CreateScene: BaseResourceRequest
     {
-      Metadata = metadata;
-      Group = group;
+        public CreateScene(Metadata metadata, ResourceIdentifier group)
+        {
+            Metadata = metadata;
+            Group = group;
+        }
+
+        [JsonProperty("group")]
+        public ResourceIdentifier Group { get; set; }
+
+        [JsonProperty("actions")]
+        public List<SceneAction> Actions { get; set; } = new();
+
+        [JsonProperty("palette")]
+        public Palette? Palette { get; set; }
+
+        [JsonProperty("speed")]
+        public double? Speed { get; set; }
     }
-
-    [JsonPropertyName("group")]
-    public ResourceIdentifier Group { get; set; }
-
-    [JsonPropertyName("actions")]
-    public List<SceneAction> Actions { get; set; } = new();
-
-    [JsonPropertyName("palette")]
-    public Palette? Palette { get; set; }
-
-    [JsonPropertyName("speed")]
-    public double? Speed { get; set; }
-
-  }
- 
 }

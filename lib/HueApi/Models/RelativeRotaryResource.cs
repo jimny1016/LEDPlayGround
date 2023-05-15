@@ -1,30 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace HueApi.Models
 {
   public class RelativeRotaryResource : HueResource
   {
-    [JsonPropertyName("relative_rotary")]
+    [JsonProperty("relative_rotary")]
     public RelativeRotary? RelativeRotary { get; set; }
   }
 
   public class RelativeRotary
   {
-    [JsonPropertyName("last_event")]
+    [JsonProperty("last_event")]
     public RelativeRotaryLastEvent? LastEvent { get; set; }
   }
 
   public class RelativeRotaryLastEvent
   {
-    [JsonPropertyName("action")]
+    [JsonProperty("action")]
     public RelativeRotaryLastEventAction? Action { get; set; }
 
-    [JsonPropertyName("rotation")]
+    [JsonProperty("rotation")]
     public RelativeRotaryLastEventRotation? Rotation { get; set; }
   }
 
@@ -33,26 +29,26 @@ namespace HueApi.Models
     /// <summary>
     /// A rotation opposite to the previous rotation, will always start with new start command.
     /// </summary>
-    [JsonPropertyName("direction")]
+    [JsonProperty("direction")]
     public RelativeRotaryDirection? Direction { get; set; }
 
     /// <summary>
     /// amount of rotation since previous event in case of repeat, amount of rotation since start in case of a start_event. Resolution = 1000 steps / 360 degree rotation.
     /// </summary>
-    [JsonPropertyName("steps")]
+    [JsonProperty("steps")]
     public int? Steps { get; set; }
 
-    [JsonPropertyName("duration")]
+    [JsonProperty("duration")]
     public int? Duration { get; set; }
   }
 
-  [JsonConverter(typeof(JsonStringEnumConverter))]
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum RelativeRotaryDirection
   {
     clock_wise, counter_clock_wise
   }
 
-  [JsonConverter(typeof(JsonStringEnumConverter))]
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum RelativeRotaryLastEventAction
   {
     start, repeat

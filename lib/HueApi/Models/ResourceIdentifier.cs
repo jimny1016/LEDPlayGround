@@ -1,15 +1,15 @@
 using System.Diagnostics;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace HueApi.Models
 {
-  [DebuggerDisplay("{Rtype} | {Rid}")]
-  public record ResourceIdentifier
-  {
-    [JsonPropertyName("rid")]
-    public Guid Rid { get; set; }
+    [DebuggerDisplay("{Rtype} | {Rid}")]
+    public record ResourceIdentifier
+    {
+        [JsonProperty("rid")]
+        public Guid Rid { get; set; }
 
-    [JsonPropertyName("rtype")]
-    public string Rtype { get; set; } = default!;
-  }
+        [JsonProperty("rtype")]
+        public string Rtype { get; set; } = default!;
+    }
 }

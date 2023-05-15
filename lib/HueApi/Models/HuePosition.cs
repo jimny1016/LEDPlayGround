@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace HueApi.Models
 {
@@ -18,13 +18,13 @@ namespace HueApi.Models
       Z = z;
     }
 
-    [JsonPropertyName("x")]
+    [JsonProperty("x")]
     public double X { get; set; }
 
-    [JsonPropertyName("y")]
+    [JsonProperty("y")]
     public double Y { get; set; }
 
-    [JsonPropertyName("z")]
+    [JsonProperty("z")]
     public double Z { get; set; }
 
     [JsonIgnore]

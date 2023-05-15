@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace HueApi.Models
 {
   public class HueResponse<T> : HueErrorResponse
   {
-    [JsonPropertyName("data")]
+    [JsonProperty("data")]
     public List<T> Data { get; set; } = new();
   }
 
@@ -30,7 +25,7 @@ namespace HueApi.Models
 
   public class HueErrorResponse
   {
-    [JsonPropertyName("errors")]
+    [JsonProperty("errors")]
     public HueErrors Errors { get; set; } = new();
 
     public bool HasErrors => Errors.Any();

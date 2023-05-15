@@ -1,21 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace HueApi.Models.Requests
 {
-  public class UpdateDevice : BaseResourceRequest
-  {
-    [JsonPropertyName("identify")]
-    public Identify? Identify { get; set; }
-  }
+    public class UpdateDevice: BaseResourceRequest
+    {
+        [JsonProperty("identify")]
+        public Identify? Identify { get; set; }
+    }
 
-  public class Identify
-  {
-    [JsonPropertyName("action")]
-    public string Action { get; set; } = "identify";
-  }
+    public class Identify
+    {
+        [JsonProperty("action")]
+        public string Action { get; set; } = "identify";
+    }
 }

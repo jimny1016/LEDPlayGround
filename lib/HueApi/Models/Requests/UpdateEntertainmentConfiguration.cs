@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace HueApi.Models.Requests
 {
-  [JsonConverter(typeof(JsonStringEnumConverter))]
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum EntertainmentConfigurationAction
   {
     start, stop
@@ -15,16 +11,16 @@ namespace HueApi.Models.Requests
 
   public class UpdateEntertainmentConfiguration : BaseResourceRequest
   {
-    [JsonPropertyName("action")]
+    [JsonProperty("action")]
     public EntertainmentConfigurationAction? Action { get; set; }
 
-    [JsonPropertyName("configuration_type")]
+    [JsonProperty("configuration_type")]
     public EntertainmentConfigurationType? ConfigurationType { get; set; }
 
-    [JsonPropertyName("locations")]
+    [JsonProperty("locations")]
     public Locations? Locations { get; set; }
 
-    [JsonPropertyName("stream_proxy")]
+    [JsonProperty("stream_proxy")]
     public StreamProxy? StreamProxy { get; set; }
 
   }

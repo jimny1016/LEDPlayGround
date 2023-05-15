@@ -1,90 +1,82 @@
-using HueApi.Models.Requests.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace HueApi.Models
 {
-  public class SmartScene : HueResource
-  {
-    [JsonPropertyName("group")]
-    public ResourceIdentifier? Group { get; set; }
+    public class SmartScene: HueResource
+    {
+        [JsonProperty("group")]
+        public ResourceIdentifier? Group { get; set; }
 
-    [JsonPropertyName("week_timeslots")]
-    public List<SmartSceneDayTimeslot> WeekTimeslots { get; set; } = default!;
+        [JsonProperty("week_timeslots")]
+        public List<SmartSceneDayTimeslot> WeekTimeslots { get; set; } = default!;
 
-    [JsonPropertyName("active_timeslot")]
-    public ActiveTimeslot ActiveTimeslot { get; set; } = default!;
+        [JsonProperty("active_timeslot")]
+        public ActiveTimeslot ActiveTimeslot { get; set; } = default!;
 
-    [JsonPropertyName("state")]
-    public SmartSceneState State { get; set; }
-  }
+        [JsonProperty("state")]
+        public SmartSceneState State { get; set; }
+    }
 
-  public class SmartSceneDayTimeslot
-  {
-    [JsonPropertyName("timeslots")]
-    public List<SmartSceneTimeslot> Timeslots { get; set; } = default!;
+    public class SmartSceneDayTimeslot
+    {
+        [JsonProperty("timeslots")]
+        public List<SmartSceneTimeslot> Timeslots { get; set; } = default!;
 
-    [JsonPropertyName("recurrence")]
-    public List<Weekday> Recurrence { get; set; } = default!;
-  }
+        [JsonProperty("recurrence")]
+        public List<Weekday> Recurrence { get; set; } = default!;
+    }
 
-  public class SmartSceneTimeslot
-  {
-    [JsonPropertyName("start_time")]
-    public TimeslotStartTime StartTime { get; set; } = default!;
+    public class SmartSceneTimeslot
+    {
+        [JsonProperty("start_time")]
+        public TimeslotStartTime StartTime { get; set; } = default!;
 
-    [JsonPropertyName("target")]
-    public ResourceIdentifier Target { get; set; } = default!;
-
-    
-  }
-
-  public class TimeslotStartTime
-  {
-    [JsonPropertyName("kind")]
-    public string Kind { get; set; } = "time";
-
-    [JsonPropertyName("time")]
-    public TimeslotStartTimeTime Time { get; set; } = default!;
-  }
-
-  public class TimeslotStartTimeTime
-  {
-    [JsonPropertyName("hour")]
-    public int Hour { get; set; } = default!;
-
-    [JsonPropertyName("minute")]
-    public int Minute { get; set; } = default!;
-
-    [JsonPropertyName("second")]
-    public int Second { get; set; } = default!;
-  }
+        [JsonProperty("target")]
+        public ResourceIdentifier Target { get; set; } = default!;
 
 
+    }
 
-  public class ActiveTimeslot
-  {
-    [JsonPropertyName("timeslot_id")]
-    public int TimeslotId { get; set; }
+    public class TimeslotStartTime
+    {
+        [JsonProperty("kind")]
+        public string Kind { get; set; } = "time";
 
-    [JsonPropertyName("weekday")]
-    public Weekday Weekday { get; set; }
-  }
+        [JsonProperty("time")]
+        public TimeslotStartTimeTime Time { get; set; } = default!;
+    }
 
+    public class TimeslotStartTimeTime
+    {
+        [JsonProperty("hour")]
+        public int Hour { get; set; } = default!;
 
-  [JsonConverter(typeof(JsonStringEnumConverter))]
-  public enum Weekday
-  {
-    monday, tuesday, wednesday, thursday, friday, saturday, sunday
-  }
+        [JsonProperty("minute")]
+        public int Minute { get; set; } = default!;
 
-  [JsonConverter(typeof(JsonStringEnumConverter))]
-  public enum SmartSceneState
-  {
-    inactive, active
-  }
+        [JsonProperty("second")]
+        public int Second { get; set; } = default!;
+    }
+
+    public class ActiveTimeslot
+    {
+        [JsonProperty("timeslot_id")]
+        public int TimeslotId { get; set; }
+
+        [JsonProperty("weekday")]
+        public Weekday Weekday { get; set; }
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum Weekday
+    {
+        monday, tuesday, wednesday, thursday, friday, saturday, sunday
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum SmartSceneState
+    {
+        inactive, active
+    }
 }

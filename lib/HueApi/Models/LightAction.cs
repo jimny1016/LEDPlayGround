@@ -1,34 +1,29 @@
 using HueApi.Models.Requests.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace HueApi.Models
 {
   public class LightAction : IUpdateColor, IUpdateColorTemperature, IUpdateOn
   {
-    [JsonPropertyName("on")]
+    [JsonProperty("on")]
     public On? On { get; set; }
 
-    [JsonPropertyName("dimming")]
+    [JsonProperty("dimming")]
     public Dimming? Dimming { get; set; }
 
-    [JsonPropertyName("color")]
+    [JsonProperty("color")]
     public Color? Color { get; set; }
 
-    [JsonPropertyName("color_temperature")]
+    [JsonProperty("color_temperature")]
     public ColorTemperature? ColorTemperature { get; set; }
 
-    [JsonPropertyName("gradient")]
+    [JsonProperty("gradient")]
     public Gradient? Gradient { get; set; }
 
-    [JsonPropertyName("effects")]
+    [JsonProperty("effects")]
     public Effects? Effects { get; set; }
 
-    [JsonPropertyName("dynamics")]
+    [JsonProperty("dynamics")]
     public Dynamics? Dynamics { get; set; }
   }
 }

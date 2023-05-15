@@ -22,14 +22,14 @@ namespace LEDPlayground.Countrollers.ASUS
                 //if (dev.Name != "AddressableStrip 3")
                 //    continue;
                 // Traverse all LED's
-                //foreach (IAuraRgbLight light in dev.Lights)
-                //{
-                //    //if(light.Name != "RGB HEADER")
-                //    //    continue;
-                //    Console.WriteLine($"I'm light:{light.Name}");
-                //    light.Color = 0x00FF0000;//0x00BBGGRR
-                //}
-                //dev.Apply();
+                foreach (IAuraRgbLight light in dev.Lights)
+                {
+                    //if(light.Name != "RGB HEADER")
+                    //    continue;
+                    Console.WriteLine($"I'm light:{light.Name}");
+                    light.Color = 0x00FF0000;//0x00BBGGRR
+                }
+                dev.Apply();
             }
         }
     }
