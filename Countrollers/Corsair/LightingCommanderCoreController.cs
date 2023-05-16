@@ -1,5 +1,6 @@
 ﻿using HidSharp;
 using HueApi.Models;
+using LEDPlayground.Common;
 using LEDPlayground.Enums.Corsair;
 using Org.BouncyCastle.Bcpg;
 using System;
@@ -16,7 +17,6 @@ namespace LEDPlayground.Countrollers.Corsair
     static class LightingCommanderCoreConfig
     {
         public const byte ConnectionType = 8;
-        public const int ByteCount = 1280;
         public const int FanTypesQL = 6;
     }
 
@@ -70,7 +70,7 @@ namespace LEDPlayground.Countrollers.Corsair
             // Configure Fan Ports to use QL Fan size grouping. 34 Leds
             List<byte> fanSettings = Enumerable.Repeat((byte)0, 25).ToList();
             fanSettings[0] = 0x00;
-            fanSettings[1] = 0x08;
+            fanSettings[1] = LightingCommanderCoreConfig.ConnectionType;
             fanSettings[2] = 0x06;
             fanSettings[3] = 0x01;
             fanSettings[4] = 0x11;
@@ -101,9 +101,6 @@ namespace LEDPlayground.Countrollers.Corsair
                 RGBData.Add(mxPxColor[0]);
                 RGBData.Add(mxPxColor[1]);
                 RGBData.Add(mxPxColor[2]);
-                //RGBData[EliteLCDCooler.Mapping[iIdx] * 3] = mxPxColor[0];
-                //RGBData[EliteLCDCooler.Mapping[iIdx] * 3 + 1] = mxPxColor[1];
-                //RGBData[EliteLCDCooler.Mapping[iIdx] * 3 + 2] = mxPxColor[2];
             }
 
             return RGBData.ToArray();
@@ -128,10 +125,11 @@ namespace LEDPlayground.Countrollers.Corsair
             const int headerSize = 4;
             int bytesSent = 0;
 
-            rgbData = new byte[] { 0x12, 0x00 }.Concat(rgbData).ToArray();
+            //rgbData = new byte[] { 0x12, 0x00 }.Concat(rgbData).ToArray();
 
             int totalBytes = rgbData.Length;
-            int initialPacketSize = LightingCommanderCoreConfig.ByteCount - initialHeaderSize;
+            var byteCount = FindBufferLength();
+            int initialPacketSize = byteCount - initialHeaderSize;
 
             WriteLighting(rgbData.Length, rgbData.Take(initialPacketSize).ToArray());
 
@@ -140,7 +138,7 @@ namespace LEDPlayground.Countrollers.Corsair
 
             while (totalBytes > 0)
             {
-                int bytesToSend = Math.Min(LightingCommanderCoreConfig.ByteCount - headerSize, totalBytes);
+                int bytesToSend = Math.Min(byteCount - headerSize, totalBytes);
                 StreamLighting(rgbData.Take(bytesToSend).ToArray());
 
                 totalBytes -= bytesToSend;
@@ -148,17 +146,33 @@ namespace LEDPlayground.Countrollers.Corsair
             }
         }
 
+        private static int FindBufferLength()
+        {
+            var packet = new List<byte>
+            {
+                0x00,
+                LightingCommanderCoreConfig.ConnectionType,
+                (byte)CommandIds.PingDevice,
+            };
+
+            _stream.Write(packet.ToArray());
+            var result = _stream.Read();
+            return result.Length;
+        }
+
         private static void WriteLighting(int ledCount, byte[] rgbData)
         {
-            var packet = new List<byte>();
-            packet.Add(0x00);
-            packet.Add(8);
-            packet.Add(6);
-            packet.Add(0x00);
-            packet.Add((byte)(ledCount & 0xFF));
-            packet.Add((byte)(ledCount >> 8));
-            packet.Add(0x00);
-            packet.Add(0x00);
+            var packet = new List<byte>
+            {
+                0x00,
+                LightingCommanderCoreConfig.ConnectionType,
+                6,
+                0x00,
+                (byte)(ledCount & 0xFF),
+                (byte)(ledCount >> 8),
+                0x00,
+                0x00
+            };
             packet.AddRange(rgbData);
 
             _stream.Write(packet.ToArray());
@@ -166,11 +180,13 @@ namespace LEDPlayground.Countrollers.Corsair
 
         private static void StreamLighting(byte[] rgbData)
         {
-            var packet = new List<byte>();
-            packet.Add(0x00);
-            packet.Add(8);
-            packet.Add(7);
-            packet.Add(0x00);
+            var packet = new List<byte>
+            {
+                0x00,
+                LightingCommanderCoreConfig.ConnectionType,
+                7,
+                0x00
+            };
             packet.AddRange(rgbData);
 
             _stream.Write(packet.ToArray());
