@@ -1,16 +1,11 @@
 ﻿using HidSharp;
-using HueApi.Models;
 using LEDPlayground.Common;
 using LEDPlayground.Enums.Corsair;
 using Org.BouncyCastle.Bcpg;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Reflection.Metadata;
-using System.Runtime.InteropServices;
-using static System.Net.Mime.MediaTypeNames;
+using System.Threading;
 
 namespace LEDPlayground.Countrollers.Corsair
 {
@@ -28,19 +23,26 @@ namespace LEDPlayground.Countrollers.Corsair
             var deviceList = DeviceList.Local;
             //水冷
             //var deviceInfo = deviceList.GetHidDevices(0x1b1c, 0x0C39).FirstOrDefault();
-            var deviceInfo = deviceList.GetHidDevices(0x1b1c, 0x0C32).FirstOrDefault();
-
+            var deviceInfo = deviceList.GetHidDevices(0x1b1c, 0x0C32).Aggregate((max, x) => (max == null || x.MaxOutputReportLength > max.MaxOutputReportLength) ? x : max); ;
+            
             try
             {
                 deviceInfo.TryOpen(out HidStream stream);
                 _stream = stream;
                 var handler = new LightingCommanderCoreHandle(stream);
                 handler.CloseAllHandle();
+                Thread.Sleep(200);
                 SetProperty();
+                Thread.Sleep(200);
                 handler.OpenHandle(Handles.Lighting, Endpoints.LightingController);
-                SetFanType();
+                Thread.Sleep(200);
                 handler.OpenHandle(Handles.Background, Endpoints.LedCount_4Pin);
+                Thread.Sleep(200);
+                SetFanType();
+                Thread.Sleep(200);
                 handler.CloseHandle(Handles.Background);
+                Thread.Sleep(200);
+                //SendWhite();
                 SendRGBData(GetPumpLedData("0xFFFFFF"));
             }
             catch (Exception ex)
@@ -119,13 +121,29 @@ namespace LEDPlayground.Countrollers.Corsair
             return rgb;
         }
 
+        private static void SendWhite()
+        {
+            string s;
+            while (true)
+            {
+                s = "00 08 06 00 4a 00 00 00 12 00 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff";
+                _stream.Write(s.ToByteArray());
+                Thread.Sleep(200);
+
+
+                s = "00 08 07 00 ff ff 00 ff ff 00 ff ff 00 ff ff 00 ff ff 00 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00";
+                _stream.Write(s.ToByteArray());
+                Thread.Sleep(200);
+            }
+        }
+
         private static void SendRGBData(byte[] rgbData)
         {
             const int initialHeaderSize = 8;
             const int headerSize = 4;
             int bytesSent = 0;
 
-            //rgbData = new byte[] { 0x12, 0x00 }.Concat(rgbData).ToArray();
+            rgbData = new byte[] { 0x12, 0x00 }.Concat(rgbData).ToArray();
 
             int totalBytes = rgbData.Length;
             var byteCount = FindBufferLength();
