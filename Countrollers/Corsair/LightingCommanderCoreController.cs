@@ -18,6 +18,7 @@ namespace LEDPlayground.Countrollers.Corsair
     public class LightingCommanderCoreController
     {
         static HidStream _stream;
+        static int byteCount;
         public LightingCommanderCoreController()
         {
             var deviceList = DeviceList.Local;
@@ -43,7 +44,23 @@ namespace LEDPlayground.Countrollers.Corsair
                 handler.CloseHandle(Handles.Background);
                 Thread.Sleep(200);
                 //SendWhite();
-                SendRGBData(GetPumpLedData("0xFFFFFF"));
+                byteCount = FindBufferLength();
+                var colorString = "0x0000FF";
+                var colorString2 = "0x00FF00";
+                var colorString3 = "0xFF0000";
+                var colorString4 = "0xFFFF00";
+                var colorString5 = "0xFF00FF";
+                var colorString6 = "0x00FFFF";
+                var colorString7 = "0xFFFFFF";
+                while (true)
+                {
+                    var towInputs = GetPumpLedData(colorString).Concat(GetFanLedData(colorString2)).Concat(GetFanLedData(colorString3)).Concat(GetFanLedData(colorString4)).Concat(GetFanLedData(colorString5)).Concat(GetFanLedData(colorString6)).Concat(GetFanLedData(colorString7)).ToArray();
+
+                    SendRGBData(towInputs);
+                    Thread.Sleep(200);
+                }
+                
+                //SendRGBData(GetPumpLedData("0x0000FF"));
             }
             catch (Exception ex)
             {
@@ -107,6 +124,25 @@ namespace LEDPlayground.Countrollers.Corsair
 
             return RGBData.ToArray();
         }
+        public static byte[] GetFanLedData(string color)
+        {
+            List<byte> RGBData = new List<byte>();
+
+            for (int iIdx = 0; iIdx < 34; iIdx++)
+            {
+                List<byte> mxPxColor;
+
+                //find colors
+                mxPxColor = HexToRgb(color);
+
+                //set colors
+                RGBData.Add(mxPxColor[0]);
+                RGBData.Add(mxPxColor[1]);
+                RGBData.Add(mxPxColor[2]);
+            }
+
+            return RGBData.ToArray();
+        }
 
         public static List<byte> HexToRgb(string hex)
         {
@@ -141,27 +177,30 @@ namespace LEDPlayground.Countrollers.Corsair
         {
             const int initialHeaderSize = 8;
             const int headerSize = 4;
-            int bytesSent = 0;
 
             rgbData = new byte[] { 0x12, 0x00 }.Concat(rgbData).ToArray();
 
             int totalBytes = rgbData.Length;
-            var byteCount = FindBufferLength();
             int initialPacketSize = byteCount - initialHeaderSize;
 
-            WriteLighting(rgbData.Length, rgbData.Take(initialPacketSize).ToArray());
+            WriteLighting(rgbData.Length, Splice(ref rgbData, initialPacketSize));
 
             totalBytes -= initialPacketSize;
-            bytesSent += initialPacketSize;
 
             while (totalBytes > 0)
             {
                 int bytesToSend = Math.Min(byteCount - headerSize, totalBytes);
-                StreamLighting(rgbData.Take(bytesToSend).ToArray());
+                StreamLighting(Splice(ref rgbData, bytesToSend));
 
                 totalBytes -= bytesToSend;
-                bytesSent += bytesToSend;
             }
+        }
+
+        public static byte[] Splice(ref byte[] list, int count)
+        {
+            var taken = list.Take(count).ToArray();
+            list = list.Skip(count).ToArray();
+            return taken;
         }
 
         private static int FindBufferLength()
