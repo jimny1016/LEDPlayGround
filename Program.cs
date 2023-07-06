@@ -13,6 +13,7 @@ using System.Threading.Channels;
 using System.Drawing;
 using System.Collections.Generic;
 using LEDPlayground.Countrollers.Corsair;
+using LEDPlayground.Common;
 
 namespace LEDPlayground
 {
@@ -20,7 +21,7 @@ namespace LEDPlayground
     {
         public static void Main(string[] args)
         {
-            new LightingCommanderCoreController();
+
         }
     }
 }
