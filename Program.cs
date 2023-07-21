@@ -49,15 +49,19 @@ namespace LEDPlayground
 
             while (true)
             {
-                Console.WriteLine("請輸入指令，0:切換控制節點，1:打開SerialPort，2:進入顏色測試模式");
+                Console.WriteLine("請輸入指令，0:切換控制節點至安卓，1:切換控制節點至STM32，2:切換螢幕黑白，3:進入顏色測試模式");
                 var command = Console.ReadLine();
                 switch(command)
                 {
                     case "0":
+                        Console.WriteLine("切換控制節點至安卓中...");
                         SendCommand("SwitchToAndroidControllMode");
+                        Console.WriteLine("切換控制節點至安卓成功!");
                         break;
                     case "1":
-                        SendCommand("InitSerialPort");
+                        Console.WriteLine("切換控制節點至STM32中...");
+                        SendCommand("SwitchToSTM32ControllMode");
+                        Console.WriteLine("切換控制節點至STM32成功!");
                         break;
                     case "2":
                         break;
