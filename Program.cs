@@ -34,7 +34,7 @@ namespace LEDPlayground
                 Console.WriteLine("開始TCP Socket連線...");
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 clientSocket.Connect(new IPEndPoint(IPAddress.Parse("192.168.42.169"), 8080));
-                if(clientSocket == null && !clientSocket.Connected) 
+                if(clientSocket == null || !clientSocket.Connected) 
                 {
                     throw new Exception("TCP連線失敗，請檢察測試APP是否開啟，或是開啟後裝置的USB連線模式是否有切換到網路共享。");
                 }
@@ -64,6 +64,9 @@ namespace LEDPlayground
                         Console.WriteLine("切換控制節點至STM32成功!");
                         break;
                     case "2":
+                        Console.WriteLine("切換背景顏色中...");
+                        SendCommand("SwitchBackGround");
+                        Console.WriteLine("切換背景顏色成功!");                        
                         break;
                     default:
                         Console.WriteLine("指令不符合規範。");
