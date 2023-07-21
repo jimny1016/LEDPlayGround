@@ -1,23 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
-using System.Management;
-using AuraServiceLib;
-using System.Xml.Linq;
-using LEDPlayground.Countrollers.ASUS;
-using CUESDK;
-using HidSharp;
-using System.Linq;
-using System.Threading.Channels;
-using System.Drawing;
-using System.Collections.Generic;
-using LEDPlayground.Countrollers.Corsair;
-using LEDPlayground.Common;
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
-using System.Net.NetworkInformation;
 
 namespace LEDPlayground
 {
@@ -49,7 +33,7 @@ namespace LEDPlayground
 
             while (true)
             {
-                Console.WriteLine("請輸入指令，0:切換控制節點至安卓，1:切換控制節點至STM32，2:切換螢幕黑白，3:進入顏色測試模式");
+                Console.WriteLine("請輸入指令，0:切換控制節點至安卓，1:切換控制節點至STM32，2:切換螢幕黑白，3:進入LED燈板顏色測試(紅藍綠白各停三秒)(請確保已經在安卓節點)");
                 var command = Console.ReadLine();
                 switch(command)
                 {
@@ -67,6 +51,11 @@ namespace LEDPlayground
                         Console.WriteLine("切換背景顏色中...");
                         SendCommand("SwitchBackGround");
                         Console.WriteLine("切換背景顏色成功!");                        
+                        break;
+                    case "3":
+                        Console.WriteLine("開始LED燈板顏色測試...");
+                        SendCommand("LEDTest");
+                        Console.WriteLine("LED燈板顏色測試成功!");
                         break;
                     default:
                         Console.WriteLine("指令不符合規範。");
