@@ -1,12 +1,10 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
-namespace LEDPlayground
+class Program
 {
-    internal class Q60TestController
+    static void Main()
     {
-        public static void Main(string[] args)
-        {
-            Console.WriteLine("Hello world");
-        }
+        new WindowsTest();
     }
 }
