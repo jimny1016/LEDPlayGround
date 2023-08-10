@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 
 class WindowsTest
 {
@@ -179,13 +180,16 @@ class WindowsTest
 
     enum CDSFlags
     {
+        CDS_NORESET = 0x10000000,
         CDS_RESET = 0x40000000,
         CDS_UPDATEREGISTRY = 0x00000001,
+        CDS_UPDATEREGISTRY2 = 0x1,
         CDS_SET_PRIMARY = 0x00000010
     };
     public WindowsTest()
     {
         ChangeToSingleDisplay();
+
         //GetDisplayInfo();
         //ddInactive.dmPosition.x = 0;
         //ddInactive.dmPosition.y = 0;
@@ -219,7 +223,7 @@ class WindowsTest
             dMode.dmSize = (short)Marshal.SizeOf(dMode);
             if (EnumDisplaySettings(dd.DeviceName, ENUM_REGISTRY_SETTINGS, ref dMode))
             {
-                if (dMode.dmPelsHeight > 0 && dMode.dmPelsWidth > 0)
+                //if (dMode.dmPelsHeight > 0 && dMode.dmPelsWidth > 0)
                 {
                     if ((dd.StateFlags & DisplayDeviceStateFlags.PrimaryDevice) ==
                          DisplayDeviceStateFlags.PrimaryDevice)
@@ -240,14 +244,29 @@ class WindowsTest
     public void ChangeToSingleDisplay()
     {
         GetDisplayInfo();
-
-        ddInactive.dmPosition.x = 0;
-        ddInactive.dmPosition.y = 0;
-        ddInactive.dmPelsHeight = 0;
-        ddInactive.dmPelsWidth = 0;
-        ddInactive.dmFields = DM.PelsHeight | DM.PelsWidth | DM.Position;
-
-        ChangeDisplaySettingsEx(szInactiveDeviceName, ref ddInactive,
+        var temp = JsonConvert.DeserializeObject<DEVMODE>(JsonConvert.SerializeObject(ddInactive));
+        var temp2 = JsonConvert.DeserializeObject<DEVMODE>(JsonConvert.SerializeObject(ddInactive));
+        temp.dmPelsHeight = 0;
+        temp.dmPelsWidth = 0;
+        ChangeDisplaySettingsEx(szInactiveDeviceName, ref temp,
           IntPtr.Zero, (int)(CDSFlags.CDS_RESET | CDSFlags.CDS_UPDATEREGISTRY), IntPtr.Zero);
+
+        var ddd = ChangeDisplaySettingsEx(szInactiveDeviceName, ref temp2,
+          IntPtr.Zero, (int)(CDSFlags.CDS_NORESET | CDSFlags.CDS_UPDATEREGISTRY2), IntPtr.Zero);
+
+        uint iDeviceCntr = 0;
+        DISPLAY_DEVICE dd = new DISPLAY_DEVICE();
+        dd.cb = Marshal.SizeOf(dd);
+        while (EnumDisplayDevices(null, iDeviceCntr, ref dd, 0))
+        {
+            DEVMODE dMode = new DEVMODE();
+            dMode.dmSize = (short)Marshal.SizeOf(dMode);
+            if (EnumDisplaySettings(dd.DeviceName, ENUM_REGISTRY_SETTINGS, ref dMode))
+            {
+                ChangeDisplaySettingsEx(dd.DeviceName, ref dMode,
+                    IntPtr.Zero, (int)(CDSFlags.CDS_RESET | CDSFlags.CDS_UPDATEREGISTRY), IntPtr.Zero);
+            }
+            iDeviceCntr++;
+        }
     }
 }
