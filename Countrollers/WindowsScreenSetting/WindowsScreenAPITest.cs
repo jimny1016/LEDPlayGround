@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
+//ref:
+//https://blog.lohr.dev/primary-display-windows
+//https://stackoverflow.com/questions/61429285/enable-a-disabled-screen-using-changedisplaysettingsex
+//https://zouzhongliang.com/index.php/2018/06/16/changedisplaysettingsexhanshu/
+//https://www.asawicki.info/news_1637_how_to_change_display_mode_using_winapi
 
 namespace LEDPlayground.Countrollers.WindowsScreenSetting
 {
@@ -10,6 +15,10 @@ namespace LEDPlayground.Countrollers.WindowsScreenSetting
         {
             CloseInactiveAndStartInactive();
         }
+        /// <summary>
+        /// If you want to enable a disable device.
+        /// You need to change device and reChage the primary device like me.
+        /// </summary>
         public void CloseInactiveAndStartInactive()
         {
             GetDisplayInfo();
